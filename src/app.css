@@ -1,0 +1,150 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-display: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Variables CSS dinámicas para los 3 conceptos visuales */
+:root,
+[data-theme='stadium'] {
+	--bg-app: #090d16;
+	--bg-surface: #111827;
+	--bg-surface-elevated: #1f2937;
+	--bg-header: rgba(17, 24, 39, 0.92);
+	--border-color: #263143;
+	--text-primary: #f9fafb;
+	--text-secondary: #9ca3af;
+	--text-muted: #6b7280;
+	--accent-primary: #10b981;
+	--accent-primary-hover: #059669;
+	--accent-primary-text: #042f2e;
+	--accent-secondary: #f59e0b;
+	--badge-live-bg: rgba(239, 68, 68, 0.18);
+	--badge-live-text: #f87171;
+	--shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='saas'] {
+	--bg-app: #f3f4f6;
+	--bg-surface: #ffffff;
+	--bg-surface-elevated: #f9fafb;
+	--bg-header: rgba(255, 255, 255, 0.94);
+	--border-color: #e5e7eb;
+	--text-primary: #111827;
+	--text-secondary: #4b5563;
+	--text-muted: #9ca3af;
+	--accent-primary: #2563eb;
+	--accent-primary-hover: #1d4ed8;
+	--accent-primary-text: #ffffff;
+	--accent-secondary: #0284c7;
+	--badge-live-bg: #fee2e2;
+	--badge-live-text: #dc2626;
+	--shadow-card: 0 4px 12px -2px rgba(17, 24, 39, 0.06);
+}
+
+[data-theme='guaro'] {
+	--bg-app: #141110;
+	--bg-surface: #1f1a18;
+	--bg-surface-elevated: #2b2421;
+	--bg-header: rgba(31, 26, 24, 0.94);
+	--border-color: #3d332e;
+	--text-primary: #faf6f5;
+	--text-secondary: #d6ccc7;
+	--text-muted: #8c7f7a;
+	--accent-primary: #f97316;
+	--accent-primary-hover: #ea580c;
+	--accent-primary-text: #ffffff;
+	--accent-secondary: #eab308;
+	--badge-live-bg: rgba(249, 115, 22, 0.2);
+	--badge-live-text: #fb923c;
+	--shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.45);
+}
+
+body {
+	background-color: var(--bg-app);
+	color: var(--text-primary);
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+}
+
+.theme-surface {
+	background-color: var(--bg-surface);
+	border-color: var(--border-color);
+	box-shadow: var(--shadow-card);
+	transition: all 0.25s ease;
+}
+
+.theme-elevated {
+	background-color: var(--bg-surface-elevated);
+	border-color: var(--border-color);
+	transition: all 0.25s ease;
+}
+
+.theme-header {
+	background-color: var(--bg-header);
+	border-color: var(--border-color);
+	backdrop-filter: blur(12px);
+}
+
+.theme-border {
+	border-color: var(--border-color);
+}
+
+.theme-text-secondary {
+	color: var(--text-secondary);
+}
+
+.theme-text-muted {
+	color: var(--text-muted);
+}
+
+.btn-accent {
+	background-color: var(--accent-primary);
+	color: var(--accent-primary-text);
+	transition: all 0.2s ease;
+}
+
+.btn-accent:hover {
+	background-color: var(--accent-primary-hover);
+	transform: translateY(-1px);
+}
+
+.accent-text {
+	color: var(--accent-primary);
+}
+
+.secondary-accent-text {
+	color: var(--accent-secondary);
+}
+
+.live-badge {
+	background-color: var(--badge-live-bg);
+	color: var(--badge-live-text);
+}
+
+@keyframes pulse-dot {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.4;
+		transform: scale(1.3);
+	}
+}
+
+.animate-live-dot {
+	animation: pulse-dot 1.5s infinite ease-in-out;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
