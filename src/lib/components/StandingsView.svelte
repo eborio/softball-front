@@ -1,7 +1,15 @@
 <script lang="ts">
 	import type { StandingsCategory, StandingRow } from '#lib/types';
 
-	let { standings }: { standings: Record<StandingsCategory, StandingRow[]> } = $props();
+	let {
+		standings,
+		sportName = 'Deporte',
+		stateName = 'Venezuela'
+	}: {
+		standings: Record<StandingsCategory, StandingRow[]>;
+		sportName?: string;
+		stateName?: string;
+	} = $props();
 
 	let category = $state<StandingsCategory>('modificado');
 	const rows = $derived(standings[category]);
@@ -31,11 +39,9 @@
 		>
 			<div>
 				<span class="text-[11px] font-bold uppercase tracking-wider accent-text">
-					Torneo Apertura 2026
+					Torneo actual
 				</span>
-				<h3 class="font-display text-xl font-bold uppercase">
-					Liga Libre de Softbol • Sede Fundalara
-				</h3>
+				<h3 class="font-display text-xl font-bold uppercase">{sportName} • {stateName}</h3>
 			</div>
 			<div class="flex items-center gap-2">
 				<span class="text-xs theme-text-secondary">Categoría:</span>

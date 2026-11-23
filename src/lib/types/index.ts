@@ -1,9 +1,17 @@
-export type Brand = 'punto' | 'roster';
-export type Theme = 'stadium' | 'saas' | 'guaro';
 export type TabId = 'live' | 'standings' | 'stadiums' | 'scorer';
 
-export type Sport = 'Softbol' | 'Beisbol' | 'Futsal' | 'Baloncesto';
-export type Estado = 'Lara' | 'Zulia' | 'Carabobo';
+export interface StateOption {
+	id: number;
+	code: string;
+	name: string;
+}
+
+export interface SportOption {
+	id: number;
+	name: string;
+	slug: string;
+	emoji: string;
+}
 
 export type GameStatus = 'live' | 'final' | 'scheduled';
 
@@ -54,13 +62,11 @@ export interface StandingRow {
 	zone: StandingZone;
 }
 
-export type StadiumStatus = 'Óptimo' | 'En Mantenimiento' | 'Lluvia Reciente';
-
 export interface Stadium {
 	name: string;
 	municipality: string;
 	sector: string;
-	status: StadiumStatus;
+	status: string;
 	/** Tailwind classes for the status pill. */
 	statusColor: string;
 	lights: string;
@@ -87,5 +93,9 @@ export interface PortalData {
 	games: Game[];
 	standings: Record<StandingsCategory, StandingRow[]>;
 	stadiums: Stadium[];
+	sports: SportOption[];
+	states: StateOption[];
+	selectedSport: string;
+	selectedState: string;
 	source: 'placeholder' | 'api';
 }

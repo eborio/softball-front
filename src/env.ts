@@ -8,12 +8,14 @@ import { defineEnvVars } from '@sveltejs/kit/env';
  */
 export const variables = defineEnvVars({
 	LARAVEL_API_URL: {
-		description: 'Base URL de la API Laravel usada en el servidor (ej. http://localhost:8000/api).',
+		description:
+			'Base URL de la API Laravel usada en el servidor, incluyendo /api (ej. http://softball.test/api).',
 		schema: (value) => value ?? ''
 	},
 	PUBLIC_API_BASE_URL: {
 		public: true,
-		description: 'Base URL pública de la API Laravel para llamadas desde el navegador.',
+		description:
+			'Base URL pública de la API Laravel, incluyendo /api, para llamadas desde el navegador.',
 		schema: (value) => value ?? ''
 	}
 });

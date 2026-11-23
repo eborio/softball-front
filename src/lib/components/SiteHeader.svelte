@@ -1,14 +1,24 @@
 <script lang="ts">
-	import {
-		app,
-		estadoLabels,
-		estados,
-		sports,
-		sportEmojis,
-		sportNames
-	} from '#lib/stores/app.svelte';
+	import SportSelect from './SportSelect.svelte';
+	import { app } from '#lib/stores/app.svelte';
 	import { toast } from '#lib/stores/toast.svelte';
-	import type { Estado, Sport, TabId } from '#lib/types';
+	import type { SportOption, StateOption, TabId } from '#lib/types';
+
+	let {
+		onSportChange,
+		onStateChange,
+		selectedSport,
+		selectedState,
+		sports,
+		states
+	}: {
+		onSportChange: (slug: string) => void;
+		onStateChange: (code: string) => void;
+		selectedSport: string;
+		selectedState: string;
+		sports: SportOption[];
+		states: StateOption[];
+	} = $props();
 
 	const tabs: { id: TabId; label: string }[] = [
 		{ id: 'live', label: 'En Vivo y Resultados' },
@@ -17,19 +27,28 @@
 		{ id: 'scorer', label: 'Modo Anotador (Móvil)' }
 	];
 
-	function onStateChange(event: Event) {
-		const value = (event.currentTarget as HTMLSelectElement).value as Estado;
-		app.setState(value);
-		if (value !== 'Lara') {
-			toast.show(`Escalabilidad lista: módulo activado para el Estado ${value}.`);
+	function handleSportChange(slug: string) {
+		onSportChange(slug);
+
+		const sport = sports.find((item) => item.slug === slug);
+
+		if (slug !== 'softbol' && sport) {
+			toast.show(`Escalabilidad lista: módulo de ${sport.name} activado.`);
 		}
 	}
 
-	function onSportChange(event: Event) {
-		const value = (event.currentTarget as HTMLSelectElement).value as Sport;
-		app.setSport(value);
-		if (value !== 'Softbol') {
-			toast.show(`Escalabilidad lista: módulo de ${sportNames[value]} activado.`);
+	function handleSportSelect(event: Event) {
+		handleSportChange((event.currentTarget as HTMLSelectElement).value);
+	}
+
+	function handleStateChange(event: Event) {
+		const code = (event.currentTarget as HTMLSelectElement).value;
+		onStateChange(code);
+
+		const state = states.find((item) => item.code === code);
+
+		if (code !== 'VE-K' && state) {
+			toast.show(`Escalabilidad lista: módulo activado para el Estado ${state.name}.`);
 		}
 	}
 
@@ -95,12 +114,12 @@
 		<div class="hidden md:flex items-center gap-2.5">
 			<div class="relative">
 				<select
-					value={app.selectedState}
-					onchange={onStateChange}
+					value={selectedState}
+					onchange={handleStateChange}
 					class="theme-elevated border theme-border rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none cursor-pointer pr-8 appearance-none"
 				>
-					{#each estados as estado (estado)}
-						<option value={estado}>📍 {estadoLabels[estado]}</option>
+					{#each states as state (state.code)}
+						<option value={state.code}>📍 {state.name}</option>
 					{/each}
 				</select>
 				<svg
@@ -118,30 +137,7 @@
 				</svg>
 			</div>
 
-			<div class="relative">
-				<select
-					value={app.selectedSport}
-					onchange={onSportChange}
-					class="theme-elevated border theme-border rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none cursor-pointer pr-8 appearance-none"
-				>
-					{#each sports as sport (sport)}
-						<option value={sport}>{sportEmojis[sport]} {sportNames[sport]}</option>
-					{/each}
-				</select>
-				<svg
-					class="w-3.5 h-3.5 absolute right-2.5 top-2.5 pointer-events-none theme-text-secondary"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M19 9l-7 7-7-7"
-					/>
-				</svg>
-			</div>
+			<SportSelect {sports} value={selectedSport} onchange={handleSportChange} />
 		</div>
 
 		<div class="flex items-center gap-2">
@@ -176,21 +172,21 @@
 
 	<div class="md:hidden px-4 pb-2.5 flex items-center gap-2">
 		<select
-			value={app.selectedState}
-			onchange={onStateChange}
+			value={selectedState}
+			onchange={handleStateChange}
 			class="w-1/2 theme-elevated border theme-border rounded-xl px-3 py-1.5 text-xs font-semibold"
 		>
-			{#each estados as estado (estado)}
-				<option value={estado}>📍 {estado}</option>
+			{#each states as state (state.code)}
+				<option value={state.code}>📍 {state.name}</option>
 			{/each}
 		</select>
 		<select
-			value={app.selectedSport}
-			onchange={onSportChange}
+			value={selectedSport}
+			onchange={handleSportSelect}
 			class="w-1/2 theme-elevated border theme-border rounded-xl px-3 py-1.5 text-xs font-semibold"
 		>
-			{#each sports as sport (sport)}
-				<option value={sport}>{sportEmojis[sport]} {sportNames[sport]}</option>
+			{#each sports as sport (sport.slug)}
+				<option value={sport.slug}>{sport.emoji} {sport.name}</option>
 			{/each}
 		</select>
 	</div>
